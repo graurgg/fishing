@@ -5,9 +5,9 @@
   "price" : 100,
   "type" : "FISH"
 }, {
-  "name" : "bass",
-  "description" : "fatty",
-  "rarity" : 20,
-  "price" : 150,
+  "name" : "cod",
+  "description" : "21",
+  "rarity" : 31,
+  "price" : 31,
   "type" : "FISH"
 } ]

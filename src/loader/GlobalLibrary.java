@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GlobalLibrary {
     @Getter
@@ -45,8 +46,19 @@ public class GlobalLibrary {
         rodInputList.forEach(RodInput::print);
     }
 
+    public boolean hasFish(String name) {
+        return fishInputList.stream()
+                .map(FishInput::getName)
+                .anyMatch(fish -> Objects.equals(fish, name));
+    }
 
-    public void updateDatabase() throws IOException {
+    public boolean hasRod(String name) {
+        return rodInputList.stream()
+                .map(RodInput::getName)
+                .anyMatch(rod -> Objects.equals(rod, name));
+    }
+
+    public synchronized void updateDatabase() throws IOException {
         Loader loader = new Loader();
         if (fishUpdates != 0) {
             loader.updateFishes(this);

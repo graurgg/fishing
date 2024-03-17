@@ -15,7 +15,6 @@ public class FishInput extends AbstractInput {
     public FishInput() {
 
     }
-
     public FishInput(final String name, final String description,
                      final Integer rarity, final Integer price) {
         super(name, description);

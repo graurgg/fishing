@@ -23,6 +23,9 @@ public final class KeyboardInputDecoder {
             case "addrod", "add rod", "adrod", "ad rod" -> {
                 return CommandEnum.ADDROD;
             }
+            case "help", "h", "hlep" -> {
+                return CommandEnum.HELP;
+            }
             default -> {
                 return CommandEnum.UNKNOWN;
             }

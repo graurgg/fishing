@@ -24,10 +24,12 @@ public class Main {
 
         KeyboardInputDecoder decoder = new KeyboardInputDecoder();
 
-        System.out.println("Hello, please input your command:");
+        System.out.println("Hello!");
 
-        while ((keyboard.hasNextLine())) {
+        while (true) {
+            System.out.println("Please input your command:");
             switch (decoder.decode(keyboard.nextLine())) {
+                case HELP -> runner.Runner.displayHelp();
                 case PRINTLIBRARY -> runner.Runner.printLibrary(library);
                 case ADDFISH -> runner.Runner.addFish(library);
                 case ADDROD -> runner.Runner.addRod(library);

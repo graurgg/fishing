@@ -4,7 +4,10 @@ import loader.GlobalLibrary;
 import loader.input.FishInput;
 import loader.input.RodInput;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
@@ -15,7 +18,10 @@ public class Runner {
         do {
             FishInput fish = new FishInput();
             System.out.println("Enter the fishes' name:");
-            fish.setName(keyboard.nextLine()); // TODO: handle the case if name already exists
+            fish.setName(keyboard.nextLine());
+            if (library.hasFish(fish.getName())) {
+                if (resolveCollision()) continue;
+            }
             System.out.flush();// TODO: see if its better to use the constructor instead of setters
             System.out.printf("Enter a description for %s:%n", fish.getName());
             fish.setDescription(keyboard.nextLine());
@@ -69,7 +75,7 @@ public class Runner {
                     return;
                 }
             }
-        } while (keyboard.hasNext());
+        } while (true);
 
     }
 
@@ -79,6 +85,9 @@ public class Runner {
             RodInput rod = new RodInput();
             System.out.println("Enter the rods' name:");
             rod.setName(keyboard.nextLine()); // TODO: handle the case if name already exists
+            if (library.hasRod(rod.getName())) {
+                if (resolveCollision()) continue;
+            }
             System.out.printf("Enter a description for %s:%n", rod.getName());
             rod.setDescription(keyboard.nextLine());
             System.out.printf("Enter the %ss' power:%n", rod.getName());
@@ -128,12 +137,36 @@ public class Runner {
                     return;
                 }
             }
-        } while (keyboard.hasNext());
+        } while (true);
 
     }
 
-
     public static void printLibrary(GlobalLibrary library) {
         library.printLibrary();
+    }
+
+    public static void displayHelp() {
+        Arrays.stream(CommandEnum.values())
+                .filter(command -> command.getHelpMessage().isPresent())
+                .forEach(option -> System.out.printf("%s :: %s%n%n", option.name(), option.getHelpMessage().get()));
+    }
+
+    private static boolean resolveCollision() {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.printf("Name already exists in database, overwrite?%n");
+        switch (decoder.decode(keyboard.nextLine())) {
+            case YES -> {
+                System.out.printf("Okay, overwriting...%n");
+                return false;
+            }
+            case NO -> {
+                System.out.printf("Not overwriting...%n");
+                return true;
+            }
+            case EXIT -> {
+                return true;
+            }
+        }
+        return true;
     }
 }
