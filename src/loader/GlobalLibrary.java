@@ -2,13 +2,17 @@ package loader;
 
 import loader.input.FishInput;
 import loader.input.RodInput;
+import lombok.Getter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalLibrary {
-    private List<FishInput> fishInputList = new ArrayList<>();
-    private List<RodInput> rodInputList = new ArrayList<>();
+    @Getter
+    private final List<FishInput> fishInputList = new ArrayList<>();
+    @Getter
+    private final List<RodInput> rodInputList = new ArrayList<>();
     private Integer fishUpdates;
     private Integer rodUpdates;
 
@@ -42,7 +46,7 @@ public class GlobalLibrary {
     }
 
 
-    public void updateDatabase() {
+    public void updateDatabase() throws IOException {
         Loader loader = new Loader();
         if (fishUpdates != 0) {
             loader.updateFishes(this);

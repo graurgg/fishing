@@ -1,12 +1,10 @@
 package loader;
 
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import loader.input.AbstractInput;
 import loader.input.FishInput;
 import loader.input.RodInput;
 import lombok.Getter;
@@ -20,33 +18,38 @@ import java.util.Arrays;
 // Class to take care of reading and writing from files
 @Getter
 public class Loader {
-    public static ObjectMapper objectMapper = new ObjectMapper();
+    public static ObjectMapper objectMapper = new ObjectMapper().configure(
+            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
     public static FileWriter fileWriter;
-    public static void loadData(GlobalLibrary library) throws NullPointerException, IOException {
+    public static GlobalLibrary loadData() throws NullPointerException, IOException {
+        GlobalLibrary library = new GlobalLibrary();
         File fishFile = new File("data/fish_types.json");
         File rodFile = new File("data/rod_types.json");
 
         try {
             library.addFish(Arrays.asList(objectMapper.readValue(fishFile, FishInput[].class)));
-        } catch (MismatchedInputException ignore) {
+        } catch (MismatchedInputException e) {
+            System.out.println(e.getMessage());
             // If database file is empty, simply ignore it
             // This shouldn't happen
         }
         try {
             library.addRod(Arrays.asList(objectMapper.readValue(rodFile, RodInput[].class)));
-        } catch (MismatchedInputException ignore) {
+        } catch (MismatchedInputException e) {
+            System.out.println(e.getMessage());
             // If database file is empty, simply ignore it
             // This shouldn't happen
         }
+        return library;
     }
 
-    public void updateFishes(GlobalLibrary library) {
-
+    public void updateFishes(GlobalLibrary library) throws IOException {
+        objectWriter.writeValue(new File("data/fish_types.json"), library.getFishInputList());
     }
 // TODO
-    public void updateRods(GlobalLibrary library) {
-
+    public void updateRods(GlobalLibrary library) throws IOException {
+        objectWriter.writeValue(new File("data/rod_types.json"), library.getRodInputList());
     }
 
     public static void log(Exception e) {

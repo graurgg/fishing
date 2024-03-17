@@ -6,5 +6,6 @@ public enum CommandEnum {
     NO,
     EXIT,
     ADDFISH,
-    ADDROD;
+    ADDROD,
+    PRINTLIBRARY
 }

@@ -17,6 +17,12 @@ public final class KeyboardInputDecoder {
             case "addfish", "add fish", "adfish", "ad fish" -> {
                 return CommandEnum.ADDFISH;
             }
+            case "print", "see", "p", "printlibrary" -> {
+                return CommandEnum.PRINTLIBRARY;
+            }
+            case "addrod", "add rod", "adrod", "ad rod" -> {
+                return CommandEnum.ADDROD;
+            }
             default -> {
                 return CommandEnum.UNKNOWN;
             }

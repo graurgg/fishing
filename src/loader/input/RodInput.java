@@ -1,8 +1,10 @@
 package loader.input;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class RodInput extends AbstractInput {
     private Integer power;
     private Integer price;
@@ -20,10 +22,7 @@ public class RodInput extends AbstractInput {
 
     public void print() {
         System.out.println(
-                "Name: " + getName() +
-                "\nDescription: " + getDescription() +
-                "\nPower: " + power +
-                "\nPrice: " + price);
+                "Name: " + getName());
     }
 
     @Override

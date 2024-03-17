@@ -1,20 +1,17 @@
 package runner;
 
 import loader.GlobalLibrary;
-import loader.Loader;
 import loader.input.FishInput;
+import loader.input.RodInput;
 
 import java.util.Scanner;
 
 public class Runner {
-    static KeyboardInputDecoder decoder = new KeyboardInputDecoder();
+    static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
 
     public static void addFish(GlobalLibrary library) {
         System.out.flush();
         Scanner keyboard = new Scanner(System.in);
-        // TODO: move logic to Loader class
-        // TODO: make it so new fishes are added to data jsons
-        // TODO: do the same for rods
         do {
             FishInput fish = new FishInput();
             System.out.println("Enter the fishes' name:");
@@ -25,10 +22,18 @@ public class Runner {
             System.out.flush();
             System.out.printf("Enter the %ss' rarity:%n", fish.getName());
             // Using nextLine() instead of nextInt() to avoid newline problems
-            fish.setRarity(Integer.parseInt(keyboard.nextLine()));
+            try {
+                fish.setRarity(Integer.parseInt(keyboard.nextLine()));
+            } catch (Exception e) {
+                fish.setRarity(0);
+            }
             System.out.flush();
             System.out.printf("Set the price for %s:%n", fish.getName());
-            fish.setPrice(Integer.parseInt(keyboard.nextLine()));
+            try {
+                fish.setPrice(Integer.parseInt(keyboard.nextLine()));
+            } catch (Exception e) {
+                fish.setPrice(0);
+            }
             System.out.flush();
 
             fish.print();
@@ -57,16 +62,78 @@ public class Runner {
                     continue;
                 case NO, EXIT: {
                     System.out.println("Returning to main screen.");
-                    keyboard.close();
                     return;
                 }
                 default: {
                     System.out.println("Not an option, returning to main screen.");
-                    keyboard.close();
                     return;
                 }
             }
         } while (keyboard.hasNext());
 
+    }
+
+    public static void addRod(GlobalLibrary library) {
+        Scanner keyboard = new Scanner(System.in);
+        do {
+            RodInput rod = new RodInput();
+            System.out.println("Enter the rods' name:");
+            rod.setName(keyboard.nextLine()); // TODO: handle the case if name already exists
+            System.out.printf("Enter a description for %s:%n", rod.getName());
+            rod.setDescription(keyboard.nextLine());
+            System.out.printf("Enter the %ss' power:%n", rod.getName());
+            // Using nextLine() instead of nextInt() to avoid newline problems
+            try {
+                rod.setPower(Integer.parseInt(keyboard.nextLine()));
+            } catch (Exception e) {
+                rod.setPower(0);
+            }
+            System.out.printf("Set the price for %s:%n", rod.getName());
+            try {
+                rod.setPrice(Integer.parseInt(keyboard.nextLine()));
+            } catch (Exception e) {
+                rod.setPrice(0);
+            }
+
+            rod.print();
+
+            System.out.println("Are you sure you want to add this rod? (Y/N)");
+            switch (decoder.decode(keyboard.nextLine())) {
+                case YES -> {
+                    System.out.printf("Adding %s to database...%n", rod.getName());
+                    library.addRod(rod);
+                }
+                case NO -> System.out.printf("Discarding %s...%n", rod.getName());
+
+                case EXIT -> {
+                    System.out.println("Returning to main screen.");
+                    return;
+                }
+                default -> {
+                    System.out.println("Not an option, adding rod anyway...");
+                    library.addRod(rod);
+                }
+            }
+
+            System.out.println("Would you like to add another rod to the library? (Y/N)");
+            switch (decoder.decode(keyboard.nextLine())) {
+                case YES:
+                    continue;
+                case NO, EXIT: {
+                    System.out.println("Returning to main screen.");
+                    return;
+                }
+                default: {
+                    System.out.println("Not an option, returning to main screen.");
+                    return;
+                }
+            }
+        } while (keyboard.hasNext());
+
+    }
+
+
+    public static void printLibrary(GlobalLibrary library) {
+        library.printLibrary();
     }
 }

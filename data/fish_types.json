@@ -1,7 +1,13 @@
-{
-  "name" : "cod",
-  "description" : "testes funny",
+[ {
+  "name" : "trout",
+  "description" : "tasty",
   "rarity" : 20,
   "price" : 100,
   "type" : "FISH"
-}
+}, {
+  "name" : "bass",
+  "description" : "fatty",
+  "rarity" : 20,
+  "price" : 150,
+  "type" : "FISH"
+} ]

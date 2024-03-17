@@ -1,19 +1,22 @@
 
 import loader.GlobalLibrary;
-import runner.CommandEnum;
 import runner.KeyboardInputDecoder;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static final GlobalLibrary library = new GlobalLibrary();
+    private static GlobalLibrary library;
     public static void main(String[] args) throws IOException {
-        loader.Loader.loadData(library);
+        library = loader.Loader.loadData();
 
         run();
 
-        library.updateDatabase();
+        try {
+            library.updateDatabase();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private static void run() {
@@ -25,7 +28,9 @@ public class Main {
 
         while ((keyboard.hasNextLine())) {
             switch (decoder.decode(keyboard.nextLine())) {
+                case PRINTLIBRARY -> runner.Runner.printLibrary(library);
                 case ADDFISH -> runner.Runner.addFish(library);
+                case ADDROD -> runner.Runner.addRod(library);
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");

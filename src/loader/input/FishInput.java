@@ -1,10 +1,13 @@
 package loader.input;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+
+@JsonIgnoreProperties
 public class FishInput extends AbstractInput {
     private Integer rarity;
     private Integer price;
@@ -22,10 +25,7 @@ public class FishInput extends AbstractInput {
 
     public void print() {
         System.out.println(
-                "Name: " + getName() +
-                        "\nDescription: " + getDescription() +
-                        "\nRarity: " + rarity +
-                        "\nPrice: " + price);
+                "Name: " + getName());
     }
 
     @Override

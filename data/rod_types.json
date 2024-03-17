@@ -1,0 +1,7 @@
+[ {
+  "name" : "wooden rod",
+  "description" : "flimsy",
+  "power" : 20,
+  "price" : 5,
+  "type" : "ROD"
+} ]
