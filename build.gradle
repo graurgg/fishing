@@ -1,0 +1,50 @@
+
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'distribution'
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+}
+
+run {
+    standardInput = System.in
+}
+
+application {
+    mainClass = 'Main'
+}
+
+
+distributions {
+    main {
+        distributionBaseName = 'fishing'
+        distributionClassifier = 'game'
+        contents {
+            from('data')
+        }
+    }
+}
+
+installDist {
+    into(project.name) {
+        from 'data'
+        into 'bin/data'
+    }
+}
+
+sourceSets.main.java.srcDirs = ['src']
