@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import loader.input.FishInput;
 import loader.input.RodInput;
+import loader.input.Zone;
 import lombok.Getter;
 
 import java.io.File;
@@ -26,6 +27,7 @@ public class Loader {
         GlobalLibrary library = new GlobalLibrary();
         File fishFile = new File("data/fish_types.json");
         File rodFile = new File("data/rod_types.json");
+        File zoneFile = new File("data/zones.json");
 
         try {
             library.addFish(Arrays.asList(objectMapper.readValue(fishFile, FishInput[].class)));
@@ -41,15 +43,24 @@ public class Loader {
             // If database file is empty, simply ignore it
             // This shouldn't happen
         }
+        try {
+            library.addZone(Arrays.asList(objectMapper.readValue(zoneFile, Zone[].class)));
+        } catch (MismatchedInputException e) {
+            System.out.println(e.getMessage());
+            // If database file is empty, simply ignore it
+            // This shouldn't happen
+        }
         return library;
     }
 
     public void updateFishes(GlobalLibrary library) throws IOException {
         objectWriter.writeValue(new File("data/fish_types.json"), library.getFishInputList());
     }
-// TODO
     public void updateRods(GlobalLibrary library) throws IOException {
         objectWriter.writeValue(new File("data/rod_types.json"), library.getRodInputList());
+    }
+    public void updateZones(GlobalLibrary library) throws IOException {
+        objectWriter.writeValue(new File("data/zones.json"), library.getZoneList());
     }
 
     public static void log(Exception e) {

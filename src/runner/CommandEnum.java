@@ -9,6 +9,7 @@ public enum CommandEnum {
     EXIT(null),
     ADDFISH("Adds a fish to the database."),
     ADDROD("Adds a rod to the database."),
+    ADDZONE("Adds a zone to the database."),
     PRINTLIBRARY("Displays all fishes and rods."),
     HELP("Displays this wall of text.");
 

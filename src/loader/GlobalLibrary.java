@@ -2,18 +2,22 @@ package loader;
 
 import loader.input.FishInput;
 import loader.input.RodInput;
+import loader.input.Zone;
 import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class GlobalLibrary {
     @Getter
     private final List<FishInput> fishInputList = new ArrayList<>();
     @Getter
     private final List<RodInput> rodInputList = new ArrayList<>();
+    @Getter
+    private final List<Zone> zoneList = new ArrayList<>();
     private Integer fishUpdates;
     private Integer rodUpdates;
 
@@ -30,6 +34,9 @@ public class GlobalLibrary {
     public void addRod(List<RodInput> rods) {
         rodInputList.addAll(rods);
     }
+    public void addZone(List<Zone> zones) {
+        zoneList.addAll(zones);
+    }
 
     public void addFish(FishInput fish) {
         fishInputList.add(fish);
@@ -41,21 +48,45 @@ public class GlobalLibrary {
         rodUpdates++;
     }
 
+    public void addZone(Zone zone) {
+        zoneList.add(zone);
+    }
+
+    public void removeFish(String fishName) {
+        Optional<FishInput> fish = getFish(fishName);
+        fish.ifPresent(fishInputList::remove);
+    }
+    public void removeRod(String rodName) {
+        Optional<RodInput> rod = getRod(rodName);
+        rod.ifPresent(rodInputList::remove);
+    }
+    public void removeZone(String zoneName) {
+        Optional<Zone> zone = getZone(zoneName);
+        zone.ifPresent(zoneList::remove);
+        System.out.println("REMOVED ZONE");
+    }
+
     public void printLibrary() {
         fishInputList.forEach(FishInput::print);
         rodInputList.forEach(RodInput::print);
     }
 
-    public boolean hasFish(String name) {
+    public Optional<FishInput> getFish(String name) {
         return fishInputList.stream()
-                .map(FishInput::getName)
-                .anyMatch(fish -> Objects.equals(fish, name));
+                .filter(fish -> Objects.equals(fish.getName(), name))
+                .findAny();
     }
 
-    public boolean hasRod(String name) {
+    public Optional<RodInput> getRod(String name) {
         return rodInputList.stream()
-                .map(RodInput::getName)
-                .anyMatch(rod -> Objects.equals(rod, name));
+                .filter(rod -> Objects.equals(rod.getName(), name))
+                .findAny();
+    }
+
+    public Optional<Zone> getZone(String name) {
+        return zoneList.stream()
+                .filter(zone -> Objects.equals(zone.getName(), name))
+                .findAny();
     }
 
     public synchronized void updateDatabase() throws IOException {
@@ -71,6 +102,8 @@ public class GlobalLibrary {
         } else {
             System.out.println("No need to update rods.");
         }
+
+            loader.updateZones(this);
 
     }
 

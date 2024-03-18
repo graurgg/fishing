@@ -26,6 +26,9 @@ public final class KeyboardInputDecoder {
             case "help", "h", "hlep" -> {
                 return CommandEnum.HELP;
             }
+            case "addzone", "add zone", "adzone", "ad zone", "addznoe" -> {
+                return CommandEnum.ADDZONE;
+            }
             default -> {
                 return CommandEnum.UNKNOWN;
             }

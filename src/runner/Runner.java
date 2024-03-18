@@ -1,11 +1,12 @@
 package runner;
 
-import com.sun.tools.javac.Main;
 import loader.GlobalLibrary;
 import loader.input.FishInput;
 import loader.input.RodInput;
+import loader.input.Zone;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Runner {
@@ -21,9 +22,10 @@ public class Runner {
             FishInput fish = new FishInput();
             System.out.println("Enter the fishes' name:");
             fish.setName(keyboard.nextLine());
-            if (library.hasFish(fish.getName())) {
+            if (library.getFish(fish.getName()).isPresent()) {
                 if (resolveCollision()) continue;
             }
+            library.removeFish(fish.getName());
             System.out.printf("Enter a description for %s:%n", fish.getName());
             fish.setDescription(keyboard.nextLine());
             System.out.printf("Enter the %ss' rarity:%n", fish.getName());
@@ -86,9 +88,10 @@ public class Runner {
             RodInput rod = new RodInput();
             System.out.println("Enter the rods' name:");
             rod.setName(keyboard.nextLine()); // TODO: handle the case if name already exists
-            if (library.hasRod(rod.getName())) {
+            if (library.getRod(rod.getName()).isPresent()) {
                 if (resolveCollision()) continue;
             }
+            library.removeRod(rod.getName());
             System.out.printf("Enter a description for %s:%n", rod.getName());
             rod.setDescription(keyboard.nextLine());
             System.out.printf("Enter the %ss' power:%n", rod.getName());
@@ -128,6 +131,76 @@ public class Runner {
             System.out.print(ESCAPE);
 
             System.out.println("Would you like to add another rod to the library? (Y/N)");
+            switch (decoder.decode(keyboard.nextLine())) {
+                case YES:
+                    continue;
+                case NO, EXIT: {
+                    System.out.println("Returning to main screen.");
+                    return;
+                }
+                default: {
+                    System.out.println("Not an option, returning to main screen.");
+                    return;
+                }
+            }
+        } while (true);
+
+    }
+    public static void addZone(GlobalLibrary library) {
+        System.out.print(ESCAPE);
+        Scanner keyboard = new Scanner(System.in);
+        do {
+            Zone zone = new Zone();
+            System.out.println("Enter the zones' name:");
+            zone.setName(keyboard.nextLine());
+            if (library.getZone(zone.getName()).isPresent()) {
+                if (resolveCollision()) {
+                    continue;
+                }
+            }
+            library.removeZone(zone.getName());
+            System.out.printf("Enter a description for the %s:%n", zone.getName());
+            zone.setDescription(keyboard.nextLine());
+            System.out.printf("What kind of fish live in this zone?%n");
+
+            String fishName = keyboard.nextLine();
+            do {
+                Optional<FishInput> fish = library.getFish(fishName);
+                if (fish.isPresent()) {
+                    System.out.printf("Adding %s to the %s.%n", fishName, zone.getName());
+                    zone.addFish(fish.get().getName());
+                } else {
+                    System.out.printf("I don't know what kind of fish a %s is...%n", fishName);
+                }
+
+                System.out.printf("Does anything else live here?%n");
+                fishName = keyboard.nextLine();
+            } while (!decoder.decode(fishName).equals(CommandEnum.NO));
+
+            System.out.print(ESCAPE);
+
+            zone.debug();
+
+            System.out.println("Are you sure you want to add this zone? (Y/N)");
+            switch (decoder.decode(keyboard.nextLine())) {
+                case YES -> {
+                    System.out.printf("Adding %s to database...%n", zone.getName());
+                    library.addZone(zone);
+                }
+                case NO -> System.out.printf("Discarding %s...%n", zone.getName());
+
+                case EXIT -> {
+                    System.out.println("Returning to main screen.");
+                    return;
+                }
+                default -> {
+                    System.out.println("Not an option, adding rod anyway...");
+                    library.addZone(zone);
+                }
+            }
+            System.out.print(ESCAPE);
+
+            System.out.println("Would you like to add another zone to the library? (Y/N)");
             switch (decoder.decode(keyboard.nextLine())) {
                 case YES:
                     continue;

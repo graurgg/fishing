@@ -1,0 +1,6 @@
+[ {
+  "name" : "woods",
+  "description" : "woody",
+  "fishes" : [ "cod" ],
+  "type" : "ZONE"
+} ]

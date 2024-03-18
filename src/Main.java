@@ -5,8 +5,6 @@ import runner.KeyboardInputDecoder;
 import java.io.IOException;
 import java.util.Scanner;
 
-import static runner.Runner.ESCAPE;
-
 public class Main {
     private static GlobalLibrary library;
     public static void main(String[] args) throws IOException {
@@ -36,6 +34,7 @@ public class Main {
                 case PRINTLIBRARY -> runner.Runner.printLibrary(library);
                 case ADDFISH -> runner.Runner.addFish(library);
                 case ADDROD -> runner.Runner.addRod(library);
+                case ADDZONE -> runner.Runner.addZone(library);
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");
