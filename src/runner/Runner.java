@@ -5,9 +5,7 @@ import loader.input.FishInput;
 import loader.input.RodInput;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
