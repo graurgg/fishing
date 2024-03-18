@@ -21,8 +21,6 @@
 
 1. Populate database with items
 2. Add a *fish* command
-3. Make it so the CLI flushes after every command
-4. Display the *help* command at start
 
 #### Long-term
 1. Add a player object for stuff like equipment and inventory

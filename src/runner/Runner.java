@@ -1,5 +1,6 @@
 package runner;
 
+import com.sun.tools.javac.Main;
 import loader.GlobalLibrary;
 import loader.input.FishInput;
 import loader.input.RodInput;
@@ -9,9 +10,12 @@ import java.util.Scanner;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
+    // String for clearing Windows terminal
+    // TODO: make it work for other OSes
+    public static final String ESCAPE = "\033[H\033[2J";
 
     public static void addFish(GlobalLibrary library) {
-        System.out.flush();
+        System.out.print(ESCAPE);
         Scanner keyboard = new Scanner(System.in);
         do {
             FishInput fish = new FishInput();
@@ -20,10 +24,8 @@ public class Runner {
             if (library.hasFish(fish.getName())) {
                 if (resolveCollision()) continue;
             }
-            System.out.flush();// TODO: see if its better to use the constructor instead of setters
             System.out.printf("Enter a description for %s:%n", fish.getName());
             fish.setDescription(keyboard.nextLine());
-            System.out.flush();
             System.out.printf("Enter the %ss' rarity:%n", fish.getName());
             // Using nextLine() instead of nextInt() to avoid newline problems
             try {
@@ -31,16 +33,15 @@ public class Runner {
             } catch (Exception e) {
                 fish.setRarity(0);
             }
-            System.out.flush();
             System.out.printf("Set the price for %s:%n", fish.getName());
             try {
                 fish.setPrice(Integer.parseInt(keyboard.nextLine()));
             } catch (Exception e) {
                 fish.setPrice(0);
             }
-            System.out.flush();
+            System.out.print(ESCAPE);
 
-            fish.print();
+            fish.debug();
 
             System.out.println("Are you sure you want to add this fish? (Y/N)");
             switch (decoder.decode(keyboard.nextLine())) {
@@ -59,6 +60,7 @@ public class Runner {
                     library.addFish(fish);
                 }
             }
+            System.out.print(ESCAPE);
 
             System.out.println("Would you like to add another fish to the library? (Y/N)");
             switch (decoder.decode(keyboard.nextLine())) {
@@ -78,6 +80,7 @@ public class Runner {
     }
 
     public static void addRod(GlobalLibrary library) {
+        System.out.print(ESCAPE);
         Scanner keyboard = new Scanner(System.in);
         do {
             RodInput rod = new RodInput();
@@ -101,8 +104,9 @@ public class Runner {
             } catch (Exception e) {
                 rod.setPrice(0);
             }
+            System.out.print(ESCAPE);
 
-            rod.print();
+            rod.debug();
 
             System.out.println("Are you sure you want to add this rod? (Y/N)");
             switch (decoder.decode(keyboard.nextLine())) {
@@ -121,6 +125,7 @@ public class Runner {
                     library.addRod(rod);
                 }
             }
+            System.out.print(ESCAPE);
 
             System.out.println("Would you like to add another rod to the library? (Y/N)");
             switch (decoder.decode(keyboard.nextLine())) {
@@ -140,10 +145,13 @@ public class Runner {
     }
 
     public static void printLibrary(GlobalLibrary library) {
+        System.out.print(ESCAPE);
         library.printLibrary();
     }
 
     public static void displayHelp() {
+        System.out.print(ESCAPE);
+
         Arrays.stream(CommandEnum.values())
                 .filter(command -> command.getHelpMessage().isPresent())
                 .forEach(option -> System.out.printf("%s :: %s%n%n", option.name(), option.getHelpMessage().get()));

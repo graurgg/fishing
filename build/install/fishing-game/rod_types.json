@@ -4,4 +4,16 @@
   "power" : 20,
   "price" : 5,
   "type" : "ROD"
+}, {
+  "name" : "iron rod",
+  "description" : "heav",
+  "power" : 20,
+  "price" : 40,
+  "type" : "ROD"
+}, {
+  "name" : "steel",
+  "description" : "very heavy",
+  "power" : 100,
+  "price" : 1000,
+  "type" : "ROD"
 } ]

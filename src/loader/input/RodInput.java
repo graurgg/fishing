@@ -24,6 +24,14 @@ public class RodInput extends AbstractInput {
         System.out.println(
                 "Name: " + getName());
     }
+    public void debug() {
+        String n = System.lineSeparator();
+        System.out.println(
+                "Name: " + getName() + n +
+                        "Description: " + getDescription() + n +
+                        "Price: " + getPrice() + n +
+                        "Rarity: " + getPower());
+    }
 
     @Override
     public InputType getType() {

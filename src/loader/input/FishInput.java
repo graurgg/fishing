@@ -27,6 +27,16 @@ public class FishInput extends AbstractInput {
                 "Name: " + getName());
     }
 
+    public void debug() {
+        String n = System.lineSeparator();
+        System.out.println(
+                "Name: " + getName() + n +
+                "Description: " + getDescription() + n +
+                "Price: " + getPrice() + n +
+                "Rarity: " + getRarity());
+    }
+
+
     @Override
     public InputType getType() {
         return InputType.FISH;

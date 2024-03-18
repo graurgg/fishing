@@ -5,6 +5,8 @@ import runner.KeyboardInputDecoder;
 import java.io.IOException;
 import java.util.Scanner;
 
+import static runner.Runner.ESCAPE;
+
 public class Main {
     private static GlobalLibrary library;
     public static void main(String[] args) throws IOException {
@@ -24,7 +26,8 @@ public class Main {
 
         KeyboardInputDecoder decoder = new KeyboardInputDecoder();
 
-        System.out.println("Hello!");
+        System.out.println("Hello, here is a list of available commands:");
+        runner.Runner.displayHelp();
 
         while (true) {
             System.out.println("Please input your command:");
