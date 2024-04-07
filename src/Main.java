@@ -1,5 +1,7 @@
 
+import entities.Player;
 import loader.GlobalLibrary;
+import loader.input.Zone;
 import runner.KeyboardInputDecoder;
 
 import java.io.IOException;
@@ -7,8 +9,10 @@ import java.util.Scanner;
 
 public class Main {
     private static GlobalLibrary library;
+    private static Player player = new Player();
     public static void main(String[] args) throws IOException {
         library = loader.Loader.loadData();
+        library.getZoneList().forEach(Zone::getWeights);
 
         run();
 
@@ -35,6 +39,8 @@ public class Main {
                 case ADDFISH -> runner.Runner.addFish(library);
                 case ADDROD -> runner.Runner.addRod(library);
                 case ADDZONE -> runner.Runner.addZone(library);
+                case FISH -> runner.Runner.fish(player);
+//                case GOTO -> runner.Runner.goTo(player);
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");

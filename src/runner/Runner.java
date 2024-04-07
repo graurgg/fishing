@@ -1,13 +1,13 @@
 package runner;
 
+import entities.Player;
 import loader.GlobalLibrary;
 import loader.input.FishInput;
 import loader.input.RodInput;
 import loader.input.Zone;
+import org.javatuples.Pair;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
@@ -168,7 +168,7 @@ public class Runner {
                 Optional<FishInput> fish = library.getFish(fishName);
                 if (fish.isPresent()) {
                     System.out.printf("Adding %s to the %s.%n", fishName, zone.getName());
-                    zone.addFish(fish.get().getName());
+                    zone.addFish(fish.get());
                 } else {
                     System.out.printf("I don't know what kind of fish a %s is...%n", fishName);
                 }
@@ -214,7 +214,35 @@ public class Runner {
                 }
             }
         } while (true);
+    }
 
+    public static void fish(Player player) {
+        Zone zone = player.getCurrentZone();
+        NavigableSet<Pair<String, Double>> weights = zone.getWeights();
+
+        Optional<String> caughtFish = findFish(weights);
+
+        caughtFish.ifPresentOrElse(fish -> System.out.printf("Caught %s", fish), () -> {
+            throw new NoSuchElementException();
+        });
+    }
+
+    private static Optional<String> findFish(NavigableSet<Pair<String, Double>> weights) {
+        Random r = new Random();
+
+        double randomValue = Math.floor(100 * r.nextDouble() * 100) / 100;
+        double cumulativeProbability = 0.0;
+
+        // Iterate weights set in descending order
+        NavigableSet<Pair<String, Double>> reverse = weights.descendingSet();
+
+        for (Pair<String, Double> iter : reverse) {
+            cumulativeProbability += iter.getValue1();
+            if (randomValue <= cumulativeProbability) {
+                return Optional.of(iter.getValue0());
+            }
+        }
+        return Optional.empty();
     }
 
     public static void printLibrary(GlobalLibrary library) {
