@@ -22,6 +22,7 @@
 1. Populate database with items
 2. Test the *fish* command
 3. Change the *goto* command to take an argument instead of prompting the user
+4. Change the math formula for fishing rod power
 #### Long-term
 1. Add a player object for stuff like equipment and inventory
 2. Add a travelling system for fishing in other places with different fish pools
