@@ -1,6 +1,18 @@
 [ {
   "name" : "woods",
   "description" : "woody",
-  "fishes" : [ "cod" ],
+  "fishes" : [ {
+    "name" : "trout",
+    "description" : "tasty",
+    "rarity" : 20,
+    "price" : 100,
+    "type" : "FISH"
+  }, {
+    "name" : "cod",
+    "description" : "21",
+    "rarity" : 31,
+    "price" : 31,
+    "type" : "FISH"
+  } ],
   "type" : "ZONE"
 } ]

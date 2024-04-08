@@ -69,6 +69,7 @@ public class GlobalLibrary {
     public void printLibrary() {
         fishInputList.forEach(FishInput::print);
         rodInputList.forEach(RodInput::print);
+        zoneList.forEach(Zone::print);
     }
 
     public Optional<FishInput> getFish(String name) {

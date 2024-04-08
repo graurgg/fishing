@@ -40,7 +40,8 @@ public class Main {
                 case ADDROD -> runner.Runner.addRod(library);
                 case ADDZONE -> runner.Runner.addZone(library);
                 case FISH -> runner.Runner.fish(player);
-//                case GOTO -> runner.Runner.goTo(player);
+                case GOTO -> runner.Runner.goTo(player, library);
+//                case EQUIP -> runner.Runner.equipRod(player, library);
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");

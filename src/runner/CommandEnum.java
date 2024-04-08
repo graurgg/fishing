@@ -11,7 +11,9 @@ public enum CommandEnum {
     ADDROD("Adds a rod to the database."),
     ADDZONE("Adds a zone to the database."),
     PRINTLIBRARY("Displays all fishes and rods."),
-    FISH("Tries to catch fish in the current zone with the current rod"),
+    FISH("Tries to catch fish in the current zone with the current rod."),
+    GOTO("Opens a prompt to change current zone."),
+    EQUIP("Opens a prompt to equip a fishing rod."),
     HELP("Displays this wall of text.");
 
     final String helpMessage;

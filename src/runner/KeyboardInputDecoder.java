@@ -4,7 +4,7 @@ public final class KeyboardInputDecoder {
     //TODO: write this as a map
 
     public CommandEnum decode(String input) {
-        switch (input.toLowerCase()) {
+        switch (input.trim().toLowerCase()) {
             case "yes", "y", "yeah", "ye", "ys", "yea" -> {
                 return CommandEnum.YES;
             }
@@ -31,6 +31,12 @@ public final class KeyboardInputDecoder {
             }
             case "fish", "cast", "f", "fsih" -> {
                 return CommandEnum.FISH;
+            }
+            case "go to", "goto", "go" -> {
+                return CommandEnum.GOTO;
+            }
+            case "equip", "eq", "equio" -> {
+                return CommandEnum.EQUIP;
             }
             default -> {
                 return CommandEnum.UNKNOWN;

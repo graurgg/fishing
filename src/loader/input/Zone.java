@@ -26,7 +26,7 @@ public class Zone extends AbstractInput{
         System.out.println(
                 "Name: " + getName() + n +
                 "Description: " + getDescription() + n +
-                "Fish: " + fishes);
+                "Fish: " + fishes.stream().map(FishInput::getName).toList());
     }
 
     public NavigableSet<Pair<String, Double>> getWeights() {
@@ -44,6 +44,7 @@ public class Zone extends AbstractInput{
             //  List with (Name of the fish), (Percent chance out of 100 to get said fish)
             weightsList.add(new Pair<>(iter.getName(), Math.floor((iter.getRarity().doubleValue() / totalRarity) * 10000) / 100));
         }
+
         return weightsList;
     }
 
