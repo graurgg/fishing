@@ -11,11 +11,12 @@ import java.util.*;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
+    private static GlobalLibrary library = GlobalLibrary.getInstance();
     // String for clearing Windows terminal
     // TODO: make it work for other OSes
     public static final String ESCAPE = "\033[H\033[2J";
 
-    public static void addFish(GlobalLibrary library) {
+    public static void addFish() {
         System.out.print(ESCAPE);
         Scanner keyboard = new Scanner(System.in);
         do {
@@ -81,7 +82,7 @@ public class Runner {
 
     }
 
-    public static void addRod(GlobalLibrary library) {
+    public static void addRod() {
         System.out.print(ESCAPE);
         Scanner keyboard = new Scanner(System.in);
         do {
@@ -146,7 +147,7 @@ public class Runner {
         } while (true);
 
     }
-    public static void addZone(GlobalLibrary library) {
+    public static void addZone() {
         System.out.print(ESCAPE);
         Scanner keyboard = new Scanner(System.in);
         do {
@@ -227,7 +228,10 @@ public class Runner {
 
         Optional<String> caughtFish = findFish(weights, nothingChance);
 
-        caughtFish.ifPresentOrElse(fish -> System.out.printf("Caught %s!%n", fish), () -> {
+        caughtFish.ifPresentOrElse(fish -> {
+            System.out.printf("Caught %s!%n", fish);
+            library.getFish(fish).ifPresent(player::addFish);
+            }, () -> {
             throw new NoSuchElementException();
         });
     }
@@ -255,7 +259,7 @@ public class Runner {
         return Optional.empty();
     }
 
-    public static void goTo(Player player, GlobalLibrary library) {
+    public static void goTo(Player player) {
         Scanner keyboard = new Scanner(System.in);
         System.out.println("Where to?");
         String zoneName = keyboard.nextLine().trim().toLowerCase();
@@ -264,9 +268,19 @@ public class Runner {
                 () -> System.out.printf("Couldn't find the zone named %s...%n", zoneName));
     }
 
-    public static void printLibrary(GlobalLibrary library) {
+    public static void equipRod(Player player) {
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("What rod?");
+        String rodName = keyboard.nextLine().trim().toLowerCase();
+
+        library.getRod(rodName).ifPresentOrElse(player::equipRod,
+                () -> System.out.printf("Couldn't find the rod named %s...%n", rodName));
+    }
+
+    public static void printLibrary(Player player) {
         System.out.print(ESCAPE);
         library.printLibrary();
+        player.printInventory();
     }
 
     public static void displayHelp() {

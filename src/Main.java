@@ -8,16 +8,14 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static GlobalLibrary library;
-    private static Player player = new Player();
+    private static final Player player = new Player();
     public static void main(String[] args) throws IOException {
-        library = loader.Loader.loadData();
-        library.getZoneList().forEach(Zone::getWeights);
+        loader.Loader.loadData();
 
         run();
 
         try {
-            library.updateDatabase();
+            GlobalLibrary.updateDatabase();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -35,13 +33,13 @@ public class Main {
             System.out.println("Please input your command:");
             switch (decoder.decode(keyboard.nextLine())) {
                 case HELP -> runner.Runner.displayHelp();
-                case PRINTLIBRARY -> runner.Runner.printLibrary(library);
-                case ADDFISH -> runner.Runner.addFish(library);
-                case ADDROD -> runner.Runner.addRod(library);
-                case ADDZONE -> runner.Runner.addZone(library);
+                case PRINTLIBRARY -> runner.Runner.printLibrary(player);
+                case ADDFISH -> runner.Runner.addFish();
+                case ADDROD -> runner.Runner.addRod();
+                case ADDZONE -> runner.Runner.addZone();
                 case FISH -> runner.Runner.fish(player);
-                case GOTO -> runner.Runner.goTo(player, library);
-//                case EQUIP -> runner.Runner.equipRod(player, library);
+                case GOTO -> runner.Runner.goTo(player);
+                case EQUIP -> runner.Runner.equipRod(player);
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");

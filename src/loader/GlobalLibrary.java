@@ -12,20 +12,27 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class GlobalLibrary {
+    private static GlobalLibrary instance = null;
     @Getter
     private final List<FishInput> fishInputList = new ArrayList<>();
     @Getter
     private final List<RodInput> rodInputList = new ArrayList<>();
     @Getter
     private final List<Zone> zoneList = new ArrayList<>();
-    private Integer fishUpdates;
-    private Integer rodUpdates;
+    private static Integer fishUpdates;
+    private static Integer rodUpdates;
 
-    public GlobalLibrary() {
+    private GlobalLibrary() {
         fishUpdates = 0;
         rodUpdates = 0;
     }
 
+    public static synchronized GlobalLibrary getInstance() {
+        if (instance == null) {
+            instance = new GlobalLibrary();
+        }
+        return instance;
+    }
 
     public void addFish(List<FishInput> fishes) {
         fishInputList.addAll(fishes);
@@ -90,21 +97,21 @@ public class GlobalLibrary {
                 .findAny();
     }
 
-    public synchronized void updateDatabase() throws IOException {
+    public static synchronized void updateDatabase() throws IOException {
         Loader loader = new Loader();
         if (fishUpdates != 0) {
-            loader.updateFishes(this);
+            loader.updateFishes();
         } else {
             System.out.println("No need to update fishes.");
         }
 
         if (rodUpdates != 0) {
-            loader.updateRods(this);
+            loader.updateRods();
         } else {
             System.out.println("No need to update rods.");
         }
 
-            loader.updateZones(this);
+            loader.updateZones();
 
     }
 

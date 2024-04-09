@@ -23,8 +23,8 @@ public class Loader {
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
     public static FileWriter fileWriter;
-    public static GlobalLibrary loadData() throws NullPointerException, IOException {
-        GlobalLibrary library = new GlobalLibrary();
+    private static GlobalLibrary library = GlobalLibrary.getInstance();
+    public static void loadData() throws NullPointerException, IOException {
         File fishFile = new File("data/fish_types.json");
         File rodFile = new File("data/rod_types.json");
         File zoneFile = new File("data/zones.json");
@@ -50,16 +50,18 @@ public class Loader {
             // If database file is empty, simply ignore it
             // This shouldn't happen
         }
-        return library;
+
+        // Updates the fish weights for each zone in the library
+        library.getZoneList().forEach(Zone::getWeights);
     }
 
-    public void updateFishes(GlobalLibrary library) throws IOException {
+    public void updateFishes() throws IOException {
         objectWriter.writeValue(new File("data/fish_types.json"), library.getFishInputList());
     }
-    public void updateRods(GlobalLibrary library) throws IOException {
+    public void updateRods() throws IOException {
         objectWriter.writeValue(new File("data/rod_types.json"), library.getRodInputList());
     }
-    public void updateZones(GlobalLibrary library) throws IOException {
+    public void updateZones() throws IOException {
         objectWriter.writeValue(new File("data/zones.json"), library.getZoneList());
     }
 

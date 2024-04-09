@@ -17,8 +17,13 @@ public enum CommandEnum {
     HELP("Displays this wall of text.");
 
     final String helpMessage;
+    public String argument;
     CommandEnum(String helpMessage) {
         this.helpMessage = helpMessage;
+    }
+
+    public void setArgument(String argument) {
+        this.argument = argument;
     }
 
     public Optional<String> getHelpMessage() {
