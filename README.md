@@ -21,9 +21,8 @@
 
 1. Populate database with items
 2. Test the *fish* command
-3. Change the *goto* command to take an argument instead of prompting the user
-4. Change the math formula for fishing rod power
-5. Add a player-inventory for owned rods (and also a method to buy a rod)
+3. Change the math formula for fishing rod power
+4. Add a player-inventory for owned rods (and also a method to buy a rod)
 #### Long-term
 1. Add a player object for stuff like equipment and inventory
 2. Add a travelling system for fishing in other places with different fish pools

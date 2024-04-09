@@ -11,7 +11,8 @@ import java.util.*;
 
 public class Runner {
     static final KeyboardInputDecoder decoder = new KeyboardInputDecoder();
-    private static GlobalLibrary library = GlobalLibrary.getInstance();
+    private static final GlobalLibrary library = GlobalLibrary.getInstance();
+    private static final Player player = Player.getInstance();
     // String for clearing Windows terminal
     // TODO: make it work for other OSes
     public static final String ESCAPE = "\033[H\033[2J";
@@ -217,7 +218,7 @@ public class Runner {
         } while (true);
     }
 
-    public static void fish(Player player) {
+    public static void fish() {
         Zone zone = player.getCurrentZone();
         NavigableSet<Pair<String, Double>> weights = zone.getWeights();
 
@@ -259,25 +260,17 @@ public class Runner {
         return Optional.empty();
     }
 
-    public static void goTo(Player player) {
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("Where to?");
-        String zoneName = keyboard.nextLine().trim().toLowerCase();
-
+    public static void goTo(String zoneName) {
         library.getZone(zoneName).ifPresentOrElse(player::changeZone,
                 () -> System.out.printf("Couldn't find the zone named %s...%n", zoneName));
     }
 
-    public static void equipRod(Player player) {
-        Scanner keyboard = new Scanner(System.in);
-        System.out.println("What rod?");
-        String rodName = keyboard.nextLine().trim().toLowerCase();
-
+    public static void equipRod(String rodName) {
         library.getRod(rodName).ifPresentOrElse(player::equipRod,
                 () -> System.out.printf("Couldn't find the rod named %s...%n", rodName));
     }
 
-    public static void printLibrary(Player player) {
+    public static void printLibrary() {
         System.out.print(ESCAPE);
         library.printLibrary();
         player.printInventory();

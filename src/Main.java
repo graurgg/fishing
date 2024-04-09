@@ -1,14 +1,12 @@
 
-import entities.Player;
 import loader.GlobalLibrary;
-import loader.input.Zone;
+import runner.CommandEnum;
 import runner.KeyboardInputDecoder;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static final Player player = new Player();
     public static void main(String[] args) throws IOException {
         loader.Loader.loadData();
 
@@ -31,15 +29,16 @@ public class Main {
 
         while (true) {
             System.out.println("Please input your command:");
-            switch (decoder.decode(keyboard.nextLine())) {
+            CommandEnum command = decoder.decode(keyboard.nextLine());
+            switch (command) {
                 case HELP -> runner.Runner.displayHelp();
-                case PRINTLIBRARY -> runner.Runner.printLibrary(player);
+                case PRINTLIBRARY -> runner.Runner.printLibrary();
                 case ADDFISH -> runner.Runner.addFish();
                 case ADDROD -> runner.Runner.addRod();
                 case ADDZONE -> runner.Runner.addZone();
-                case FISH -> runner.Runner.fish(player);
-                case GOTO -> runner.Runner.goTo(player);
-                case EQUIP -> runner.Runner.equipRod(player);
+                case FISH -> runner.Runner.fish();
+                case GOTO -> runner.Runner.goTo(command.getArgument());
+                case EQUIP -> runner.Runner.equipRod(command.getArgument());
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");
