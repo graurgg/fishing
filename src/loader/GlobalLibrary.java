@@ -37,40 +37,11 @@ public class GlobalLibrary {
     public void addFish(List<FishInput> fishes) {
         fishInputList.addAll(fishes);
     }
-
     public void addRod(List<RodInput> rods) {
         rodInputList.addAll(rods);
     }
     public void addZone(List<Zone> zones) {
         zoneList.addAll(zones);
-    }
-
-    public void addFish(FishInput fish) {
-        fishInputList.add(fish);
-        fishUpdates++;
-    }
-
-    public void addRod(RodInput rod) {
-        rodInputList.add(rod);
-        rodUpdates++;
-    }
-
-    public void addZone(Zone zone) {
-        zoneList.add(zone);
-    }
-
-    public void removeFish(String fishName) {
-        Optional<FishInput> fish = getFish(fishName);
-        fish.ifPresent(fishInputList::remove);
-    }
-    public void removeRod(String rodName) {
-        Optional<RodInput> rod = getRod(rodName);
-        rod.ifPresent(rodInputList::remove);
-    }
-    public void removeZone(String zoneName) {
-        Optional<Zone> zone = getZone(zoneName);
-        zone.ifPresent(zoneList::remove);
-        System.out.println("REMOVED ZONE");
     }
 
     public void printLibrary() {
@@ -97,23 +68,14 @@ public class GlobalLibrary {
                 .findAny();
     }
 
-    public static synchronized void updateDatabase() throws IOException {
-        Loader loader = new Loader();
-        if (fishUpdates != 0) {
-            loader.updateFishes();
-        } else {
-            System.out.println("No need to update fishes.");
-        }
-
-        if (rodUpdates != 0) {
-            loader.updateRods();
-        } else {
-            System.out.println("No need to update rods.");
-        }
-
-            loader.updateZones();
-
+    // Returns the default zone (currently the first one in the JSON)
+    public Zone getDefaultZone() {
+        return zoneList.get(0);
     }
 
+    // Returns the default rod (currently no rod, empty hands)
+    public RodInput getDefaultRod() {
+        return new RodInput("hands", "empty hands", 1, 0);
+    }
 
 }

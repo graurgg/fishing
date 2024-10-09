@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import entities.Player;
 import loader.input.FishInput;
 import loader.input.RodInput;
 import loader.input.Zone;
@@ -21,9 +22,9 @@ import java.util.Arrays;
 public class Loader {
     public static ObjectMapper objectMapper = new ObjectMapper().configure(
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    public static ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
     public static FileWriter fileWriter;
     private static GlobalLibrary library = GlobalLibrary.getInstance();
+    private static Player player = Player.getInstance();
     public static void loadData() throws NullPointerException, IOException {
         File fishFile = new File("data/fish_types.json");
         File rodFile = new File("data/rod_types.json");
@@ -53,16 +54,12 @@ public class Loader {
 
         // Updates the fish weights for each zone in the library
         library.getZoneList().forEach(Zone::getWeights);
-    }
 
-    public void updateFishes() throws IOException {
-        objectWriter.writeValue(new File("data/fish_types.json"), library.getFishInputList());
-    }
-    public void updateRods() throws IOException {
-        objectWriter.writeValue(new File("data/rod_types.json"), library.getRodInputList());
-    }
-    public void updateZones() throws IOException {
-        objectWriter.writeValue(new File("data/zones.json"), library.getZoneList());
+        // Initializes the player equipment and zone with defaults, decided in the GlobalLibrary class
+        {
+            player.changeZone(library.getDefaultZone());
+            player.equipRod(library.getDefaultRod());
+        }
     }
 
     public static void log(Exception e) {

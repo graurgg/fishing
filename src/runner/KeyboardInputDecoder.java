@@ -21,36 +21,11 @@ public final class KeyboardInputDecoder {
             case "end", "exit", "quit", "q" -> {
                 return CommandEnum.EXIT;
             }
-            case "addfish", "adfish" -> {
-                return CommandEnum.ADDFISH;
-            }
             case "print", "see", "p", "printlibrary" -> {
                 return CommandEnum.PRINTLIBRARY;
             }
-            case "addrod", "adrod" -> {
-                return CommandEnum.ADDROD;
-            }
-            case "add", "ad" -> {
-                switch (command[1].toLowerCase()) {
-                    case "fish" -> {
-                        return CommandEnum.ADDFISH;
-                    }
-                    case "rod" -> {
-                        return CommandEnum.ADDROD;
-                    }
-                    case "zone", "znoe" -> {
-                        return CommandEnum.ADDZONE;
-                    }
-                    default -> {
-                        return CommandEnum.UNKNOWN;
-                    }
-                }
-            }
             case "help", "h", "hlep" -> {
                 return CommandEnum.HELP;
-            }
-            case "addzone", "adzone", "addznoe" -> {
-                return CommandEnum.ADDZONE;
             }
             case "fish", "cast", "f", "fsih" -> {
                 return CommandEnum.FISH;

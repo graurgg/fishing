@@ -11,12 +11,6 @@ public class Main {
         loader.Loader.loadData();
 
         run();
-
-        try {
-            GlobalLibrary.updateDatabase();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     private static void run() {
@@ -33,9 +27,6 @@ public class Main {
             switch (command) {
                 case HELP -> runner.Runner.displayHelp();
                 case PRINTLIBRARY -> runner.Runner.printLibrary();
-                case ADDFISH -> runner.Runner.addFish();
-                case ADDROD -> runner.Runner.addRod();
-                case ADDZONE -> runner.Runner.addZone();
                 case FISH -> runner.Runner.fish();
                 case GOTO -> runner.Runner.goTo(command.getArgument());
                 case EQUIP -> runner.Runner.equipRod(command.getArgument());
