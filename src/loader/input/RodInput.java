@@ -20,9 +20,13 @@ public class RodInput extends AbstractInput {
         this.price = price;
     }
 
-    public void print() {
+    public void debug() {
+        String n = System.lineSeparator();
         System.out.println(
-                "Name: " + getName());
+                "Name: " + getName() + n +
+                "Description: " + getDescription() + n +
+                "Price: " + getPrice() + n +
+                "Rarity: " + getPower());
     }
 
     @Override

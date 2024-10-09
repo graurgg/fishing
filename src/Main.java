@@ -1,19 +1,19 @@
 
 import loader.GlobalLibrary;
+import runner.CommandEnum;
 import runner.KeyboardInputDecoder;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    private static GlobalLibrary library;
     public static void main(String[] args) throws IOException {
-        library = loader.Loader.loadData();
+        loader.Loader.loadData();
 
         run();
 
         try {
-            library.updateDatabase();
+            GlobalLibrary.updateDatabase();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -24,15 +24,21 @@ public class Main {
 
         KeyboardInputDecoder decoder = new KeyboardInputDecoder();
 
-        System.out.println("Hello!");
+        System.out.println("Hello, here is a list of available commands:");
+        runner.Runner.displayHelp();
 
         while (true) {
             System.out.println("Please input your command:");
-            switch (decoder.decode(keyboard.nextLine())) {
+            CommandEnum command = decoder.decode(keyboard.nextLine());
+            switch (command) {
                 case HELP -> runner.Runner.displayHelp();
-                case PRINTLIBRARY -> runner.Runner.printLibrary(library);
-                case ADDFISH -> runner.Runner.addFish(library);
-                case ADDROD -> runner.Runner.addRod(library);
+                case PRINTLIBRARY -> runner.Runner.printLibrary();
+                case ADDFISH -> runner.Runner.addFish();
+                case ADDROD -> runner.Runner.addRod();
+                case ADDZONE -> runner.Runner.addZone();
+                case FISH -> runner.Runner.fish();
+                case GOTO -> runner.Runner.goTo(command.getArgument());
+                case EQUIP -> runner.Runner.equipRod(command.getArgument());
                 case EXIT -> {
                     keyboard.close();
                     System.out.println("Thank you for playing!");

@@ -19,4 +19,9 @@ public abstract class AbstractInput {
     }
 
     public abstract InputType getType();
+
+    public void print() {
+        System.out.println(
+                "Name: " + getName());
+    }
 }

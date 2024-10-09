@@ -22,10 +22,16 @@ public class FishInput extends AbstractInput {
         this.price = price;
     }
 
-    public void print() {
+
+    public void debug() {
+        String n = System.lineSeparator();
         System.out.println(
-                "Name: " + getName());
+                "Name: " + getName() + n +
+                "Description: " + getDescription() + n +
+                "Price: " + getPrice() + n +
+                "Rarity: " + getRarity());
     }
+
 
     @Override
     public InputType getType() {

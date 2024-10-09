@@ -19,6 +19,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+
+    implementation 'org.javatuples:javatuples:1.2'
 }
 
 run {

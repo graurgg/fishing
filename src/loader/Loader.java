@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import loader.input.FishInput;
 import loader.input.RodInput;
+import loader.input.Zone;
 import lombok.Getter;
 
 import java.io.File;
@@ -22,10 +23,11 @@ public class Loader {
             DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
     public static FileWriter fileWriter;
-    public static GlobalLibrary loadData() throws NullPointerException, IOException {
-        GlobalLibrary library = new GlobalLibrary();
+    private static GlobalLibrary library = GlobalLibrary.getInstance();
+    public static void loadData() throws NullPointerException, IOException {
         File fishFile = new File("data/fish_types.json");
         File rodFile = new File("data/rod_types.json");
+        File zoneFile = new File("data/zones.json");
 
         try {
             library.addFish(Arrays.asList(objectMapper.readValue(fishFile, FishInput[].class)));
@@ -41,15 +43,26 @@ public class Loader {
             // If database file is empty, simply ignore it
             // This shouldn't happen
         }
-        return library;
+        try {
+            library.addZone(Arrays.asList(objectMapper.readValue(zoneFile, Zone[].class)));
+        } catch (MismatchedInputException e) {
+            System.out.println(e.getMessage());
+            // If database file is empty, simply ignore it
+            // This shouldn't happen
+        }
+
+        // Updates the fish weights for each zone in the library
+        library.getZoneList().forEach(Zone::getWeights);
     }
 
-    public void updateFishes(GlobalLibrary library) throws IOException {
+    public void updateFishes() throws IOException {
         objectWriter.writeValue(new File("data/fish_types.json"), library.getFishInputList());
     }
-// TODO
-    public void updateRods(GlobalLibrary library) throws IOException {
+    public void updateRods() throws IOException {
         objectWriter.writeValue(new File("data/rod_types.json"), library.getRodInputList());
+    }
+    public void updateZones() throws IOException {
+        objectWriter.writeValue(new File("data/zones.json"), library.getZoneList());
     }
 
     public static void log(Exception e) {
